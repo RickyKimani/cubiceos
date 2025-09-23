@@ -15,6 +15,10 @@ func (VdW) Params() Params {
 	}
 }
 
+func (VdW) Name() string {
+	return "van der Waals"
+}
+
 // NewvdW creates a configuration for the van der Waals cubic equation of state
 func NewvdWCfg(T, P, Tc, Pc, R float64) EOSCfg {
 	return EOSCfg{

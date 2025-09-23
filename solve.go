@@ -65,20 +65,41 @@ func SolveCubic(a, b, c, d float64) ([3]complex128, error) {
 	return roots, nil
 }
 
+// ResultPrinter prints physically meaningfull solutions
 func ResultPrinter(c [3]complex128) {
-	fs := make([]float64, 3)
-	for i, v := range c {
-		if imag(v) == 0 && real(v) > 0 {
-			fs[i] = real(v)
+	const eps = 1e-9
+	fs := make([]float64, 0, 3)
+
+	for _, v := range c {
+		if math.Abs(imag(v)) < eps {
+			r := real(v)
+			if r > 0 {
+				fs = append(fs, r)
+			}
 		}
 	}
 	slices.Sort(fs)
 
-	if len(fs) == 3 && fs[0] != fs[1] {
-		fmt.Printf("liquid phase Vsat : %.4f\n", fs[0])
-		fmt.Printf("unstable: %.4f\n", fs[1])
-		fmt.Printf("vapour phase Vsat : %.4f\n", fs[2])
-	}
+	switch len(fs) {
+	case 0:
+		fmt.Println("No physically meaningful (positive) roots found")
 
-	//TODO: Add case for len(fs) == 1 & single V val
+	case 1:
+		fmt.Printf("Single phase solution (no phase split): V = %.4f\n", fs[0])
+
+	case 3:
+		if math.Abs(fs[0]-fs[1]) < eps && math.Abs(fs[1]-fs[2]) < eps {
+			fmt.Printf("Critical point: Vc = %.4f\n", fs[0])
+		} else {
+			fmt.Printf("liquid phase Vsat : %.4f\n", fs[0])
+			fmt.Printf("unstable root     : %.4f\n", fs[1])
+			fmt.Printf("vapour phase Vsat : %.4f\n", fs[2])
+		}
+
+	case 2:
+		fmt.Printf("Two positive roots: V1 = %.4f, V2 = %.4f\n", fs[0], fs[1])
+
+	default:
+		fmt.Println("Unexpected number of positive roots")
+	}
 }

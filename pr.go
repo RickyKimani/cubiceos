@@ -20,7 +20,11 @@ func (PR) Params() Params {
 	}
 }
 
-// NewPRCfg creates a configuration for the Peng/Robinson cubic equation of state
+func (PR) Name() string {
+	return "Peng-Robinson"
+}
+
+// NewPRCfg creates a configuration for the Peng-Robinson cubic equation of state
 func NewPRCfg(T, P, Tc, Pc, W, R float64) EOSCfg {
 	return EOSCfg{
 		Type: PR{},

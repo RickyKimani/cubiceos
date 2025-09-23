@@ -17,6 +17,7 @@ type Params struct {
 type EOSType interface {
 	Alpha(tr, w float64) float64
 	Params() Params
+	Name() string
 }
 
 // EOSCfg is a configuration struct for an equation of state
@@ -26,7 +27,7 @@ type EOSCfg struct {
 	P    float64 //Pressure
 	Tc   float64 //Critical temp (Absolute)
 	Pc   float64 //Critical pressure
-	W    float64 //Acentric factor
+	W    float64 //Acentric factor (SRK and PR only)
 	R    float64 //Universal gas constant
 }
 

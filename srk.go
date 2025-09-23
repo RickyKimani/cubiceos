@@ -20,7 +20,11 @@ func (SRK) Params() Params {
 	}
 }
 
-// NewSRKCfg creates a configuration for the Soave/Redlich/Kwong cubic equation of state
+func (SRK) Name() string {
+	return "Soave-Redlich-Kwong"
+}
+
+// NewSRKCfg creates a configuration for the Soave-Redlich-Kwong cubic equation of state
 func NewSRKCfg(T, P, Tc, Pc, W, R float64) EOSCfg {
 	return EOSCfg{
 		Type: SRK{},

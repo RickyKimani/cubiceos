@@ -17,7 +17,11 @@ func (RK) Params() Params {
 	}
 }
 
-// NewRKCfg creates a configuration for the Redlich/Kwong cubic equation of state
+func (RK) Name() string {
+	return "Redlich-Kwong"
+}
+
+// NewRKCfg creates a configuration for the Redlich-Kwong cubic equation of state
 func NewRKCfg(T, P, Tc, Pc, R float64) EOSCfg {
 	return EOSCfg{
 		Type: RK{},
