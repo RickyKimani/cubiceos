@@ -94,7 +94,7 @@ var (
 			BorderForeground(colResultBorder)
 )
 
-func InitialModel() model {
+func initialModel() model {
 	l := list.New(eosChoices, list.NewDefaultDelegate(), 30, 10)
 	l.Title = "Select an Equation of State"
 	return model{state: stateMenu, list: l, parsed: make(map[string]float64)}
@@ -360,4 +360,12 @@ func (m model) compute() string {
 		return "something went wrong"
 	}
 
+}
+
+func Run() error {
+	_, err := tea.NewProgram(
+		initialModel(),
+		tea.WithAltScreen(),
+	).Run()
+	return err
 }

@@ -1,14 +1,21 @@
 package main
 
 import (
+	"context"
 	"log"
+	"os"
 
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/rickykimani/cubiceos/internal/tui"
+	"github.com/charmbracelet/fang"
 )
 
 func main() {
-	if _, err := tea.NewProgram(tui.InitialModel(), tea.WithAltScreen()).Run(); err != nil {
+	rootCmd := NewRootCmd()
+
+	if err := fang.Execute(
+		context.Background(),
+		rootCmd,
+		fang.WithNotifySignal(os.Interrupt, os.Kill),
+	); err != nil {
 		log.Fatalf("Error: %v", err)
 	}
 }
