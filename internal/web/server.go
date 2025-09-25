@@ -1,18 +1,28 @@
 package web
 
 import (
+	"context"
+	"errors"
 	"fmt"
 	"log"
 	"math"
+	"net"
 	"net/http"
+	"net/url"
+	"os"
+	"os/exec"
+	"os/signal"
+	"runtime"
 	"sort"
 	"strconv"
+	"syscall"
+	"time"
 
 	"github.com/rickykimani/cubiceos"
 	"github.com/rickykimani/cubiceos/internal/web/pages"
 )
 
-func New() *http.ServeMux {
+func newSrvMux() *http.ServeMux {
 	mux := http.NewServeMux()
 	// Serve static assets from internal/web/assets at /assets/
 	mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("internal/web/assets"))))
@@ -148,9 +158,58 @@ func New() *http.ServeMux {
 	return mux
 }
 
-func Run() {
-	log.Println("Server running at http://localhost:8080")
-	if err := http.ListenAndServe(":8080", New()); err != nil && err != http.ErrServerClosed {
-		log.Fatalf("server failed: %v", err)
+func openBrowser(url string) error {
+	switch runtime.GOOS {
+	case "linux":
+		return exec.Command("xdg-open", url).Start()
+	case "windows":
+		return exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
+	case "darwin":
+		return exec.Command("open", url).Start()
+	default:
+		return errors.New("unsupported platform")
 	}
+
+}
+func Run() {
+	ln, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		log.Fatalf("failed to find an open port: %v", err)
+	}
+	serverUrl, err := url.JoinPath("http://", ln.Addr().String())
+	if err != nil {
+		log.Fatalf("failed to join server url: %v", err)
+	}
+	srv := &http.Server{
+		Handler: newSrvMux(),
+	}
+
+	go func() {
+		log.Printf("Server running at %v", serverUrl)
+		if err := srv.Serve(ln); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("server error: %v", err)
+		}
+	}()
+
+	go func() {
+		time.Sleep(200 * time.Millisecond)
+		if err := openBrowser(serverUrl); err != nil {
+			log.Printf("error opening browser: %v", err)
+		}
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
+
+	<-quit
+	log.Println("shutting down server...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
+	defer cancel()
+
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Println("server forced to shut down")
+	}
+	log.Println("server exiting, bye...")
+
 }
