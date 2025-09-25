@@ -68,20 +68,31 @@ func (i item) Title() string       { return string(i) }
 func (i item) Description() string { return "" }
 func (i item) FilterValue() string { return string(i) }
 
+// New styles -Because it's my app(lol)
 var (
-	titleStyle = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("63"))
-	labelStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("69"))
-	inputStyle = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("205"))
-	errorStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("196"))
-	helpStyle  = lipgloss.NewStyle().Foreground(lipgloss.Color("241"))
-	boxStyle   = lipgloss.NewStyle().
+	colTitle        = lipgloss.Color("#0F766E")
+	colLabel        = lipgloss.Color("#F5F5F4")
+	colInput        = lipgloss.Color("#22C55E")
+	colError        = lipgloss.Color("#EF4444")
+	colHelp         = lipgloss.Color("#A3A3A3")
+	colBorder       = lipgloss.Color("#94A3B8")
+	colResultBorder = lipgloss.Color("#10B981")
+
+	titleStyle = lipgloss.NewStyle().Bold(true).Foreground(colTitle)
+	labelStyle = lipgloss.NewStyle().Foreground(colLabel)
+	inputStyle = lipgloss.NewStyle().Bold(true).Foreground(colInput)
+	errorStyle = lipgloss.NewStyle().Foreground(colError)
+	helpStyle  = lipgloss.NewStyle().Foreground(colHelp)
+
+	boxStyle = lipgloss.NewStyle().
 			Border(lipgloss.RoundedBorder()).
 			Padding(1, 2).
-			BorderForeground(lipgloss.Color("240"))
+			BorderForeground(colBorder)
+
 	resultStyle = lipgloss.NewStyle().
 			Border(lipgloss.DoubleBorder()).
 			Padding(1, 2).
-			BorderForeground(lipgloss.Color("35"))
+			BorderForeground(colResultBorder)
 )
 
 func initialModel() model {
@@ -261,11 +272,10 @@ func resultPrinter(eq cubiceos.EOSCfg, m model) string {
 	}
 	slices.Sort(fs)
 
-	// --- Lip Gloss styles ---
-	header := lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("205"))
-	label := lipgloss.NewStyle().Foreground(lipgloss.Color("69"))
-	value := lipgloss.NewStyle().Foreground(lipgloss.Color("15")).Bold(true)
-	invalid := lipgloss.NewStyle().Foreground(lipgloss.Color("9")).Italic(true)
+	header := lipgloss.NewStyle().Bold(true).Foreground(colTitle)
+	label := lipgloss.NewStyle().Foreground(colLabel)
+	value := lipgloss.NewStyle().Foreground(colInput).Bold(true)
+	invalid := lipgloss.NewStyle().Foreground(colError).Italic(true)
 
 	out := header.Render(fmt.Sprintf("Results for %s EOS\n", eq.Type.Name()))
 
