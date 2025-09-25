@@ -1,0 +1,28 @@
+package pages
+
+import "fmt"
+
+templ ResultsPage(results []EOSResult) {
+	<div>
+		for _, r := range results {
+			<div style="margin-bottom:1rem;">
+				<h3>{ r.Name }</h3>
+				<p><strong>Classification:</strong> { r.Classification }</p>
+				if len(r.Roots) > 0 {
+					<p><strong>Positive Roots:</strong> { fmt.Sprintf("%v", r.Roots) }</p>
+				} else {
+					<p><em>No positive real roots.</em></p>
+				}
+				if r.Liquid != nil {
+					<p>Liquid Vsat: { fmt.Sprintf("%.5f", *r.Liquid) }</p>
+				}
+				if r.Unstable != nil {
+					<p>Unstable Root: { fmt.Sprintf("%.5f", *r.Unstable) }</p>
+				}
+				if r.Vapor != nil {
+					<p>Vapour Vsat: { fmt.Sprintf("%.5f", *r.Vapor) }</p>
+				}
+			</div>
+		}
+	</div>
+}

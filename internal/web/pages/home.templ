@@ -1,0 +1,84 @@
+package pages
+
+import (
+	btn "github.com/rickykimani/cubiceos/internal/web/components/button"
+	f "github.com/rickykimani/cubiceos/internal/web/components/form"
+	cb "github.com/rickykimani/cubiceos/internal/web/components/checkbox"
+	lbl "github.com/rickykimani/cubiceos/internal/web/components/label"
+)
+
+templ HomePage() {
+	<html lang="en" class="h-full">
+		<head>
+			<meta charset="utf-8" />
+			<meta name="viewport" content="width=device-width,initial-scale=1" />
+			<title>Cubic EOS Web</title>
+			<link rel="stylesheet" href="/assets/css/output.css" />
+			<script src="/assets/js/htmx.min.js" defer></script>
+			<!-- templui label script (path adjusted to /assets/) -->
+			<script src="/assets/js/label.min.js" defer></script>
+			<style>
+			/* Remove native number input spinners */
+			input[type=number].no-spin::-webkit-outer-spin-button,
+			input[type=number].no-spin::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+			input[type=number].no-spin { -moz-appearance: textfield; }
+			</style>
+		</head>
+		<body class="min-h-full bg-background text-foreground p-6 font-sans">
+			<main class="mx-auto w-full max-w-5xl space-y-8">
+				<header class="space-y-2">
+					<h1 class="text-4xl font-semibold leading-tight">Cubic EOS Solver</h1>
+					<p class="text-sm text-muted-foreground">Provide thermodynamic conditions (T in K) and optionally the acentric factor to obtain physically meaningful real roots (volumes) for cubic equations of state.</p>
+				</header>
+				<form
+					class="rounded-xl border border-border bg-card/80 backdrop-blur-sm p-6 shadow-sm space-y-8"
+					hx-post="/calculate"
+					hx-target="#results"
+					hx-swap="innerHTML"
+					onreset="document.getElementById('results').innerHTML='';"
+				>
+					<div class="grid gap-y-10 gap-x-8 sm:gap-x-12 md:gap-x-14 lg:gap-x-16 sm:grid-cols-2 lg:grid-cols-3">
+						@f.Item() {
+							@f.Label(f.LabelProps{For: "T", Class: "tracking-wide uppercase text-[0.7rem]"}) { Temperature T (K) }
+							<input id="T" name="T" type="number" step="any" required class="no-spin mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50" />
+						}
+						@f.Item() {
+							@f.Label(f.LabelProps{For: "P", Class: "tracking-wide uppercase text-[0.7rem]"}) { Pressure P }
+							<input id="P" name="P" type="number" step="any" required class="no-spin mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50" />
+						}
+						@f.Item() {
+							@f.Label(f.LabelProps{For: "Tc", Class: "tracking-wide uppercase text-[0.7rem]"}) { Critical Temp Tc (K) }
+							<input id="Tc" name="Tc" type="number" step="any" required class="no-spin mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50" />
+						}
+						@f.Item() {
+							@f.Label(f.LabelProps{For: "Pc", Class: "tracking-wide uppercase text-[0.7rem]"}) { Critical Pressure Pc }
+							<input id="Pc" name="Pc" type="number" step="any" required class="no-spin mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50" />
+						}
+						@f.Item() {
+							@f.Label(f.LabelProps{For: "R", Class: "tracking-wide uppercase text-[0.7rem]"}) { Gas Constant R }
+							<input id="R" name="R" type="number" step="any" required class="no-spin mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50" />
+						}
+						@f.Item() {
+							@f.Label(f.LabelProps{For: "omega", Class: "tracking-wide uppercase text-[0.7rem]"}) { Acentric Factor 𝜔 (optional) }
+							<input id="omega" name="omega" type="number" step="any" class="no-spin mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50" />
+						}
+					</div>
+					@f.ItemFlex(f.ItemProps{Class: "pt-2"}) {
+						@lbl.Label(lbl.Props{For: "with_advanced", Class: "text-xs font-medium tracking-wide flex items-center gap-2"}) {
+							@cb.Checkbox(cb.Props{ID: "with_advanced", Name: "with_advanced"})
+							Include SRK / PR (requires 𝜔)
+						}
+					}
+					<div class="flex flex-wrap items-center gap-4">
+						@btn.Button(btn.Props{Type: btn.TypeSubmit}) { Solve }
+						<button type="reset" class="text-sm text-muted-foreground hover:text-foreground transition-colors">Reset</button>
+						<span class="text-[0.65rem] text-muted-foreground">Reset also clears results.</span>
+					</div>
+				</form>
+				<section id="results" class="space-y-4 min-h-12 rounded-lg border border-dashed border-border/70 p-4 text-sm text-muted-foreground" aria-live="polite">
+					<span class="opacity-70">Results will appear here after solving.</span>
+				</section>
+			</main>
+		</body>
+	</html>
+}
