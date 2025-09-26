@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"runtime/debug"
 )
+
 //quite a useless middleware ngl (err handling final boss lol)
 
 func panicRecoveryMiddleware(next http.Handler) http.Handler {
