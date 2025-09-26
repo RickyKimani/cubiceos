@@ -180,8 +180,13 @@ func Run() {
 	if err != nil {
 		log.Fatalf("failed to join server url: %v", err)
 	}
+
+	mux := newSrvMux()
+	var chainedHandler http.Handler = mux
+	chainedHandler = loggingMiddleware(chainedHandler)
+	chainedHandler = panicRecoveryMiddleware(chainedHandler)
 	srv := &http.Server{
-		Handler: newSrvMux(),
+		Handler: chainedHandler,
 	}
 
 	go func() {
