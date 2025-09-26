@@ -88,13 +88,21 @@ func newSrvMux() *http.ServeMux {
 		srkCfg := cubiceos.NewSRKCfg(T, P, Tc, Pc, omega, R)
 		prCfg := cubiceos.NewPRCfg(T, P, Tc, Pc, omega, R)
 
+		calcAB := func(cfg cubiceos.EOSCfg) (float64, float64) {
+			tr := cfg.T / cfg.Tc
+			a := cfg.Type.Params().Psi * cfg.Type.Alpha(tr, cfg.W) * cfg.R * cfg.R * cfg.Tc * cfg.Tc / cfg.Pc
+			b := cfg.Type.Params().Omega * cfg.R * cfg.Tc / cfg.Pc
+			return a, b
+		}
+
 		collect := func(name string, cfg cubiceos.EOSCfg, include bool) *pages.EOSResult {
 			if !include {
 				return nil
 			}
+			a, b := calcAB(cfg)
 			roots, err := cubiceos.CubicEOS(cfg)
 			if err != nil {
-				return &pages.EOSResult{Name: name, Classification: err.Error()}
+				return &pages.EOSResult{Name: name, Classification: "error", Error: err.Error(), A: a, B: b}
 			}
 			const eps = 1e-9
 			positives := make([]float64, 0, 3)
@@ -107,7 +115,7 @@ func newSrvMux() *http.ServeMux {
 				}
 			}
 			sort.Float64s(positives)
-			res := &pages.EOSResult{Name: name, Roots: positives}
+			res := &pages.EOSResult{Name: name, A: a, B: b}
 			switch len(positives) {
 			case 0:
 				res.Classification = "none"

@@ -3,25 +3,69 @@ package pages
 import "fmt"
 
 templ ResultsPage(results []EOSResult) {
-	<div>
+	<div class="space-y-4">
 		for _, r := range results {
-			<div style="margin-bottom:1rem;">
-				<h3>{ r.Name }</h3>
-				<p><strong>Classification:</strong> { r.Classification }</p>
-				if len(r.Roots) > 0 {
-					<p><strong>Positive Roots:</strong> { fmt.Sprintf("%v", r.Roots) }</p>
-				} else {
-					<p><em>No positive real roots.</em></p>
+			<div class="rounded-lg border border-border bg-card/80 p-4 shadow-sm">
+				<div class="flex items-center justify-between w-full">
+					<div class="flex items-baseline gap-2">
+						<h3 class="text-lg font-semibold text-foreground">{ r.Name }</h3>
+					if r.Classification == "error" {
+						<span class="inline-flex items-center text-xs rounded-full px-2.5 py-0.5 font-medium bg-destructive text-primary-foreground">{ r.Classification }</span>
+					} else if r.Classification == "single-phase" {
+						<span class="inline-flex items-center text-xs rounded-full px-2.5 py-0.5 font-medium bg-primary text-primary-foreground">{ r.Classification }</span>
+					} else {
+						<span class="inline-flex items-center text-xs rounded-full px-2.5 py-0.5 font-medium bg-secondary text-secondary-foreground">{ r.Classification }</span>
+					}
+					</div>
+				</div>
+
+				<div class="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+					<div class="text-sm text-foreground">
+						<div class="font-medium text-muted-foreground">a(T)</div>
+						<div class="mt-0.5 font-mono">{ fmt.Sprintf("%.6g", r.A) }</div>
+					</div>
+					<div class="text-sm text-foreground">
+						<div class="font-medium text-muted-foreground">b</div>
+						<div class="mt-0.5 font-mono">{ fmt.Sprintf("%.6g", r.B) }</div>
+					</div>
+				</div>
+
+				if r.Classification == "error" && r.Error != "" {
+					<div class="mt-3 text-sm font-medium text-destructive">{ r.Error }</div>
 				}
-				if r.Liquid != nil {
-					<p>Liquid Vsat: { fmt.Sprintf("%.5f", *r.Liquid) }</p>
-				}
-				if r.Unstable != nil {
-					<p>Unstable Root: { fmt.Sprintf("%.5f", *r.Unstable) }</p>
-				}
-				if r.Vapor != nil {
-					<p>Vapour Vsat: { fmt.Sprintf("%.5f", *r.Vapor) }</p>
-				}
+
+				<div class="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3 text-sm text-foreground">
+					<div>
+						<span class="font-medium">Liquid:</span>
+						<span class="ml-1">
+							if r.Liquid != nil {
+								{ fmt.Sprintf("%.6g", *r.Liquid) }
+							} else {
+								—
+							}
+						</span>
+					</div>
+					<div>
+						<span class="font-medium">Unstable:</span>
+						<span class="ml-1">
+							if r.Unstable != nil {
+								{ fmt.Sprintf("%.6g", *r.Unstable) }
+							} else {
+								—
+							}
+						</span>
+					</div>
+					<div>
+						<span class="font-medium">Vapor:</span>
+						<span class="ml-1">
+							if r.Vapor != nil {
+								{ fmt.Sprintf("%.6g", *r.Vapor) }
+							} else {
+								—
+							}
+						</span>
+					</div>
+				</div>
 			</div>
 		}
 	</div>
