@@ -8,5 +8,5 @@ task tailwind:
 
 task run:
   description: Run the web server
-  deps: templ, tailwind
+  deps: templ@bg, tailwind@bg
   cmd: go run ./cmd/web-test
