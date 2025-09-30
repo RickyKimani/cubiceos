@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io/fs"
 	"log"
 	"math"
 	"net"
@@ -24,8 +25,19 @@ import (
 
 func newSrvMux() *http.ServeMux {
 	mux := http.NewServeMux()
-	// Serve static assets from internal/web/assets at /assets/
-	mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("internal/web/assets"))))
+	if _, err := os.Stat("internal/web/assets"); err == nil {
+		mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("internal/web/assets"))))
+		log.Println("Serving from disk (dev)")
+	} else {
+		// Use embedded assets.
+		var f fs.FS = embeddedAssets
+		// Restrict to the assets/ prefix to avoid exposing other files.
+		if sub, err := fs.Sub(embeddedAssets, "assets"); err == nil {
+			f = sub
+		}
+		mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.FS(f))))
+		log.Println("serving from embed (prod)")
+	}
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if err := pages.HomePage().Render(r.Context(), w); err != nil {
@@ -123,7 +135,7 @@ func newSrvMux() *http.ServeMux {
 				res.Classification = "single-phase"
 				res.Vapor = &positives[0]
 			case 2:
-				// treat smaller as liquid, larger as vapor (approx)
+				// treat smaller as liquid, larger as vapor
 				res.Classification = "two-phase"
 				res.Liquid = &positives[0]
 				res.Vapor = &positives[1]

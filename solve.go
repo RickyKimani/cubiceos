@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"math"
 	"math/cmplx"
-	"slices"
+	"sort"
 )
 
 // SolveCubic solves ax^3 + bx^2 + cx + d = 0
@@ -78,7 +78,7 @@ func ResultPrinter(c [3]complex128) {
 			}
 		}
 	}
-	slices.Sort(fs)
+	sort.Float64s(fs)
 
 	switch len(fs) {
 	case 0:
