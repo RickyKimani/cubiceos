@@ -27,7 +27,6 @@ func newSrvMux() *http.ServeMux {
 	mux := http.NewServeMux()
 	if _, err := os.Stat("internal/web/assets"); err == nil {
 		mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("internal/web/assets"))))
-		log.Println("Serving from disk (dev)")
 	} else {
 		// Use embedded assets.
 		var f fs.FS = embeddedAssets
@@ -36,7 +35,6 @@ func newSrvMux() *http.ServeMux {
 			f = sub
 		}
 		mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.FS(f))))
-		log.Println("serving from embed (prod)")
 	}
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
