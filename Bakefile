@@ -1,12 +1,15 @@
 task templ:
   description: Compile .templ files
-  cmd: templ generate --watch --proxy="http://localhost:8090" --open-browser=false
+  cmd: templ generate
 
 task tailwind:
   description: Compile CSS files
-  cmd: npx @tailwindcss/cli -i ./internal/web/assets/css/input.css -o ./internal/web/assets/css/output.css --watch
+  cmd: 
+    npx @tailwindcss/cli -i ./internal/web/assets/css/input.css -o ./internal/web/assets/css/output.css
+    
+      
 
 task run:
   description: Run the web server
-  deps: templ@bg, tailwind@bg
+  deps: templ@cc, tailwind@cc
   cmd: go run ./cmd/web-test
