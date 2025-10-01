@@ -22,11 +22,21 @@ templ ResultsPage(results []EOSResult) {
 				<div class="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
 					<div class="text-sm text-foreground">
 						<div class="font-medium text-muted-foreground">a(T)</div>
-						<div class="mt-0.5 font-mono">{ fmt.Sprintf("%.6g", r.A) }</div>
+						<div class="mt-0.5 font-mono flex items-baseline gap-2">
+							<span>{ fmt.Sprintf("%.6g", r.A) }</span>
+							if r.AUnit != "" {
+								<span class="text-[0.7rem] text-muted-foreground">{ r.AUnit }</span>
+							}
+						</div>
 					</div>
 					<div class="text-sm text-foreground">
 						<div class="font-medium text-muted-foreground">b</div>
-						<div class="mt-0.5 font-mono">{ fmt.Sprintf("%.6g", r.B) }</div>
+						<div class="mt-0.5 font-mono flex items-baseline gap-2">
+							<span>{ fmt.Sprintf("%.6g", r.B) }</span>
+							if r.BUnit != "" {
+								<span class="text-[0.7rem] text-muted-foreground">{ r.BUnit }</span>
+							}
+						</div>
 					</div>
 				</div>
 

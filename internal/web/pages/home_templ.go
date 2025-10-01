@@ -36,7 +36,7 @@ func HomePage() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<html lang=\"en\" class=\"h-full\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Cubic EOS Web</title><script>\r\n\t\t\t(function(){\r\n\t\t\t\ttry {\r\n\t\t\t\t\tvar t = localStorage.getItem('theme');\r\n\t\t\t\t\tvar prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;\r\n\t\t\t\t\tif (t === 'dark' || (!t && prefersDark)) {\r\n\t\t\t\t\t\tdocument.documentElement.classList.add('dark');\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tdocument.documentElement.classList.remove('dark');\r\n\t\t\t\t\t}\r\n\t\t\t\t} catch (e) {}\r\n\t\t\t})();\r\n\t\t\t</script><link rel=\"stylesheet\" href=\"/assets/css/output.css\"><script src=\"/assets/js/htmx.min.js\" defer></script><!-- templui label script (path adjusted to /assets/) --><script src=\"/assets/js/label.min.js\" defer></script><style>\r\n\t\t\t/* Remove native number input spinners */\r\n\t\t\tinput[type=number].no-spin::-webkit-outer-spin-button,\r\n\t\t\tinput[type=number].no-spin::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }\r\n\t\t\tinput[type=number].no-spin { -moz-appearance: textfield; }\r\n\t\t\t</style></head><body class=\"min-h-full bg-background text-foreground p-6 font-sans\"><main class=\"mx-auto w-full max-w-5xl space-y-8\"><!-- Top-right theme toggle --><div class=\"flex justify-end\"><button id=\"theme-toggle\" type=\"button\" class=\"inline-flex items-center rounded-md border border-input bg-background px-3 py-1.5 text-sm text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50\" aria-pressed=\"false\" title=\"Toggle color scheme\" aria-label=\"Toggle color scheme\"></button></div><header class=\"space-y-2\"><h1 class=\"text-4xl font-semibold leading-tight\">Cubic EOS Solver</h1><p class=\"text-sm text-muted-foreground\">Provide thermodynamic conditions (T in K) and optionally the acentric factor to obtain physically meaningful real roots (volumes) for cubic equations of state.</p></header><form class=\"rounded-xl border border-border bg-card/80 backdrop-blur-sm p-6 shadow-sm space-y-8\" hx-post=\"/calculate\" hx-target=\"#results\" hx-swap=\"innerHTML\" onreset=\"document.getElementById('results').innerHTML='';\"><div class=\"grid gap-y-10 gap-x-8 sm:gap-x-12 md:gap-x-14 lg:gap-x-16 sm:grid-cols-2 lg:grid-cols-3\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<html lang=\"en\" class=\"h-full\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Cubic EOS Web</title><link rel=\"icon\" type=\"image/svg+xml\" href=\"/assets/icons/favicon.svg\"><script>\r\n\t\t\t(function(){\r\n\t\t\t\ttry {\r\n\t\t\t\t\tvar t = localStorage.getItem('theme');\r\n\t\t\t\t\tvar prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;\r\n\t\t\t\t\tif (t === 'dark' || (!t && prefersDark)) {\r\n\t\t\t\t\t\tdocument.documentElement.classList.add('dark');\r\n\t\t\t\t\t} else {\r\n\t\t\t\t\t\tdocument.documentElement.classList.remove('dark');\r\n\t\t\t\t\t}\r\n\t\t\t\t} catch (e) {}\r\n\t\t\t})();\r\n\t\t\t</script><link rel=\"stylesheet\" href=\"/assets/css/output.css\"><script src=\"/assets/js/htmx.min.js\" defer></script><!-- templui label script (path adjusted to /assets/) --><script src=\"/assets/js/label.min.js\" defer></script><style>\r\n\t\t\t/* Remove native number input spinners */\r\n\t\t\tinput[type=number].no-spin::-webkit-outer-spin-button,\r\n\t\t\tinput[type=number].no-spin::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }\r\n\t\t\tinput[type=number].no-spin { -moz-appearance: textfield; }\r\n\t\t\t/* GitHub icon light/dark swap */\r\n\t\t\t.github-icon { height: 18px; width: 18px; display: inline; }\r\n\t\t\t.github-icon--dark { display: none; }\r\n\t\t\t.dark .github-icon--dark { display: inline; }\r\n\t\t\t.dark .github-icon--light { display: none; }\r\n\t\t\t</style></head><body class=\"min-h-full bg-background text-foreground p-6 font-sans\"><main class=\"mx-auto w-full max-w-5xl space-y-8\"><!-- Top-right actions: GitHub + theme toggle --><div class=\"flex justify-end items-center gap-3\"><a href=\"https://github.com/RickyKimani/cubiceos\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"inline-flex items-center gap-2 hover:text-foreground\" aria-label=\"View on GitHub\"><img src=\"/assets/icons/github-mark.svg\" alt=\"GitHub\" class=\"github-icon github-icon--light\"> <img src=\"/assets/icons/github-mark-white.svg\" alt=\"GitHub\" class=\"github-icon github-icon--dark\"></a> <button id=\"theme-toggle\" type=\"button\" class=\"inline-flex items-center rounded-md border border-input bg-background px-3 py-1.5 text-sm text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50\" aria-pressed=\"false\" title=\"Toggle color scheme\" aria-label=\"Toggle color scheme\"></button></div><header class=\"space-y-2\"><h1 class=\"text-4xl font-semibold leading-tight\">Cubic EOS Solver</h1><p class=\"text-sm text-muted-foreground\">Provide thermodynamic conditions (T in K) and optionally the acentric factor to obtain physically meaningful real roots (volumes) for cubic equations of state.</p></header><form class=\"rounded-xl border border-border bg-card/80 backdrop-blur-sm p-6 shadow-sm space-y-8\" hx-post=\"/calculate\" hx-target=\"#results\" hx-swap=\"innerHTML\" onreset=\"document.getElementById('results').innerHTML='';\"><div class=\"grid gap-y-10 gap-x-8 sm:gap-x-12 md:gap-x-14 lg:gap-x-16 sm:grid-cols-2 lg:grid-cols-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -64,7 +64,7 @@ func HomePage() templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "Temperature T (K) ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "Temperature T ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -74,7 +74,7 @@ func HomePage() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, " <input id=\"T\" name=\"T\" type=\"number\" step=\"any\" required class=\"no-spin mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, " <div class=\"mt-1 flex items-stretch gap-2\"><input id=\"T\" name=\"T\" type=\"number\" step=\"any\" required class=\"no-spin w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50\"> <select name=\"T_unit\" aria-label=\"Temperature unit\" class=\"w-24 rounded-md border border-input bg-background px-2 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50\"><option value=\"K\" selected>K</option> <option value=\"C\">°C</option></select></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -118,7 +118,7 @@ func HomePage() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, " <input id=\"P\" name=\"P\" type=\"number\" step=\"any\" required class=\"no-spin mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, " <div class=\"mt-1 flex items-stretch gap-2\"><input id=\"P\" name=\"P\" type=\"number\" step=\"any\" required class=\"no-spin w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50\"> <select name=\"P_unit\" aria-label=\"Pressure unit\" class=\"w-28 rounded-md border border-input bg-background px-2 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50\"><option value=\"Pa\" selected>Pa</option> <option value=\"kPa\">kPa</option> <option value=\"bar\">bar</option> <option value=\"atm\">atm</option></select></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -152,7 +152,7 @@ func HomePage() templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "Critical Temp Tc (K) ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "Critical Temp Tc ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -162,7 +162,7 @@ func HomePage() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, " <input id=\"Tc\" name=\"Tc\" type=\"number\" step=\"any\" required class=\"no-spin mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, " <div class=\"mt-1 flex items-stretch gap-2\"><input id=\"Tc\" name=\"Tc\" type=\"number\" step=\"any\" required class=\"no-spin w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50\"> <select name=\"Tc_unit\" aria-label=\"Critical temperature unit\" class=\"w-24 rounded-md border border-input bg-background px-2 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50\"><option value=\"K\" selected>K</option> <option value=\"C\">°C</option></select></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -206,7 +206,7 @@ func HomePage() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, " <input id=\"Pc\" name=\"Pc\" type=\"number\" step=\"any\" required class=\"no-spin mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, " <div class=\"mt-1 flex items-stretch gap-2\"><input id=\"Pc\" name=\"Pc\" type=\"number\" step=\"any\" required class=\"no-spin w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50\"> <select name=\"Pc_unit\" aria-label=\"Critical pressure unit\" class=\"w-28 rounded-md border border-input bg-background px-2 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50\"><option value=\"Pa\" selected>Pa</option> <option value=\"kPa\">kPa</option> <option value=\"bar\">bar</option> <option value=\"atm\">atm</option></select></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -240,7 +240,7 @@ func HomePage() templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "Gas Constant R ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "Gas Constant R (SI) ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -250,7 +250,7 @@ func HomePage() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, " <input id=\"R\" name=\"R\" type=\"number\" step=\"any\" required class=\"no-spin mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, " <input id=\"R\" name=\"R\" type=\"number\" step=\"any\" value=\"8.314\" disabled title=\"R is fixed internally in SI: Pa·m³/(mol·K)\" class=\"no-spin mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-muted-foreground focus-visible:outline-none\"> <small class=\"block pt-1 text-[0.7rem] text-muted-foreground\">Using internal R = 8.314 Pa·m³/(mol·K)</small>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -332,27 +332,23 @@ func HomePage() templ.Component {
 					}()
 				}
 				ctx = templ.InitializeContext(ctx)
-				templ_7745c5c3_Err = cb.Checkbox(cb.Props{ID: "with_advanced", Name: "with_advanced"}).Render(ctx, templ_7745c5c3_Buffer)
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, " Include SRK / PR (requires 𝜔)")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "Volume Display Unit ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				return nil
 			})
-			templ_7745c5c3_Err = lbl.Label(lbl.Props{For: "with_advanced", Class: "text-xs font-medium tracking-wide flex items-center gap-2"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = f.Label(f.LabelProps{For: "v_unit", Class: "tracking-wide uppercase text-[0.7rem]"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var15), templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, " <select id=\"v_unit\" name=\"v_unit\" class=\"mt-1 w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50\"><option value=\"m3_per_mol\">m³/mol</option> <option value=\"m3_per_kmol\">m³/kmol</option> <option value=\"cm3_per_mol\" selected>cm³/mol</option> <option value=\"cm3_per_kmol\">cm³/kmol</option></select>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = f.ItemFlex(f.ItemProps{Class: "pt-2"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<div class=\"flex flex-wrap items-center gap-4\">")
+		templ_7745c5c3_Err = f.Item().Render(templ.WithChildren(ctx, templ_7745c5c3_Var14), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -368,17 +364,65 @@ func HomePage() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "Solve ")
+			templ_7745c5c3_Var17 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+				templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+				templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+				if !templ_7745c5c3_IsBuffer {
+					defer func() {
+						templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+						if templ_7745c5c3_Err == nil {
+							templ_7745c5c3_Err = templ_7745c5c3_BufErr
+						}
+					}()
+				}
+				ctx = templ.InitializeContext(ctx)
+				templ_7745c5c3_Err = cb.Checkbox(cb.Props{ID: "with_advanced", Name: "with_advanced"}).Render(ctx, templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, " Include SRK / PR (requires 𝜔)")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				return nil
+			})
+			templ_7745c5c3_Err = lbl.Label(lbl.Props{For: "with_advanced", Class: "text-xs font-medium tracking-wide flex items-center gap-2"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var17), templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = btn.Button(btn.Props{Type: btn.TypeSubmit}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var16), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = f.ItemFlex(f.ItemProps{Class: "pt-2"}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var16), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<button type=\"reset\" class=\"text-sm text-muted-foreground hover:text-foreground transition-colors\">Reset</button> <span class=\"text-[0.65rem] text-muted-foreground\">Reset also clears results.</span></div></form><section id=\"results\" class=\"space-y-4 min-h-12 rounded-lg border border-dashed border-border/70 p-4 text-sm text-muted-foreground\" aria-live=\"polite\"><span class=\"opacity-70\">Results will appear here after solving.</span></section></main><script>\r\n\t\t\t(function(){\r\n\t\t\t\tvar btn = document.getElementById('theme-toggle');\r\n\t\t\t\tif (!btn) return;\r\n\t\t\t\tvar moon = '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z\"/></svg>';\r\n\t\t\t\tvar sun = '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41\"/></svg>';\r\n\t\t\t\tfunction isDark(){ return document.documentElement.classList.contains('dark'); }\r\n\t\t\t\tfunction syncBtn(){\r\n\t\t\t\t\tvar dark = isDark();\r\n\t\t\t\t\tbtn.setAttribute('aria-pressed', dark ? 'true' : 'false');\r\n\t\t\t\t\tbtn.innerHTML = dark ? sun : moon;\r\n\t\t\t\t\tbtn.title = dark ? 'Switch to light mode' : 'Switch to dark mode';\r\n\t\t\t\t}\r\n\t\t\t\tbtn.addEventListener('click', function(){\r\n\t\t\t\t\tvar next = !isDark();\r\n\t\t\t\t\tdocument.documentElement.classList.toggle('dark', next);\r\n\t\t\t\t\ttry { localStorage.setItem('theme', next ? 'dark' : 'light'); } catch (e) {}\r\n\t\t\t\t\tsyncBtn();\r\n\t\t\t\t});\r\n\t\t\t\tsyncBtn();\r\n\t\t\t})();\r\n\t\t\t</script></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<div class=\"flex flex-wrap items-center gap-4\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Var18 := templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+			templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+			templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+			if !templ_7745c5c3_IsBuffer {
+				defer func() {
+					templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+					if templ_7745c5c3_Err == nil {
+						templ_7745c5c3_Err = templ_7745c5c3_BufErr
+					}
+				}()
+			}
+			ctx = templ.InitializeContext(ctx)
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "Solve ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			return nil
+		})
+		templ_7745c5c3_Err = btn.Button(btn.Props{Type: btn.TypeSubmit}).Render(templ.WithChildren(ctx, templ_7745c5c3_Var18), templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<button type=\"reset\" class=\"text-sm text-muted-foreground hover:text-foreground transition-colors\">Reset</button> <span class=\"text-[0.65rem] text-muted-foreground\">Reset also clears results.</span></div></form><section id=\"results\" class=\"space-y-4 min-h-12 rounded-lg border border-dashed border-border/70 p-4 text-sm text-muted-foreground\" aria-live=\"polite\"><span class=\"opacity-70\">Results will appear here after solving.</span></section></main><script>\r\n\t\t\t(function(){\r\n\t\t\t\tvar btn = document.getElementById('theme-toggle');\r\n\t\t\t\tif (!btn) return;\r\n\t\t\t\tvar moon = '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z\"/></svg>';\r\n\t\t\t\tvar sun = '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41\"/></svg>';\r\n\t\t\t\tfunction isDark(){ return document.documentElement.classList.contains('dark'); }\r\n\t\t\t\tfunction syncBtn(){\r\n\t\t\t\t\tvar dark = isDark();\r\n\t\t\t\t\tbtn.setAttribute('aria-pressed', dark ? 'true' : 'false');\r\n\t\t\t\t\tbtn.innerHTML = dark ? sun : moon;\r\n\t\t\t\t\tbtn.title = dark ? 'Switch to light mode' : 'Switch to dark mode';\r\n\t\t\t\t}\r\n\t\t\t\tbtn.addEventListener('click', function(){\r\n\t\t\t\t\tvar next = !isDark();\r\n\t\t\t\t\tdocument.documentElement.classList.toggle('dark', next);\r\n\t\t\t\t\ttry { localStorage.setItem('theme', next ? 'dark' : 'light'); } catch (e) {}\r\n\t\t\t\t\tsyncBtn();\r\n\t\t\t\t});\r\n\t\t\t\tsyncBtn();\r\n\t\t\t})();\r\n\t\t\t</script></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

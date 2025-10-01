@@ -12,32 +12,32 @@ func almostEqualComplex(a, b complex128, tol float64) bool {
 
 func TestSolveCubic(t *testing.T) {
 	tests := []struct {
-		name      string
+		name       string
 		a, b, c, d float64
-		wantRoots []complex128
-		wantErr   bool
+		wantRoots  []complex128
+		wantErr    bool
 	}{
 		{
-			name:      "Not cubic (a=0)",
-			a:         0, b: 1, c: 2, d: 3,
+			name: "Not cubic (a=0)",
+			a:    0, b: 1, c: 2, d: 3,
 			wantRoots: nil,
 			wantErr:   true,
 		},
 		{
-			name:      "x^3 - 1 = 0",
-			a:         1, b: 0, c: 0, d: -1,
+			name: "x^3 - 1 = 0",
+			a:    1, b: 0, c: 0, d: -1,
 			wantRoots: []complex128{1, complex(-0.5, math.Sqrt(3)/2), complex(-0.5, -math.Sqrt(3)/2)},
 			wantErr:   false,
 		},
 		{
-			name:      "x^3 - 6x^2 + 11x - 6 = 0 (roots 1,2,3)",
-			a:         1, b: -6, c: 11, d: -6,
+			name: "x^3 - 6x^2 + 11x - 6 = 0 (roots 1,2,3)",
+			a:    1, b: -6, c: 11, d: -6,
 			wantRoots: []complex128{1, 2, 3},
 			wantErr:   false,
 		},
 		{
-			name:      "x^3 + 3x^2 + 3x + 1 = 0 (triple root -1)",
-			a:         1, b: 3, c: 3, d: 1,
+			name: "x^3 + 3x^2 + 3x + 1 = 0 (triple root -1)",
+			a:    1, b: 3, c: 3, d: 1,
 			wantRoots: []complex128{-1, -1, -1},
 			wantErr:   false,
 		},

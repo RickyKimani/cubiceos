@@ -1,15 +1,18 @@
 task templ:
-  description: Compile .templ files
-  cmd: templ generate
+  description: Compile & fmt .templ files
+  cmd: 
+      templ generate
+      templ fmt ./...
 
 task tailwind:
-  description: Compile CSS files
+  description: Compile & fmt .css & .js files
   cmd: 
     npx @tailwindcss/cli -i ./internal/web/assets/css/input.css -o ./internal/web/assets/css/output.css
+    prettier --write "**/*.{js, css}"
     
-      
-
 task run:
   description: Run the web server
-  deps: templ@cc, tailwind@cc
-  cmd: go run ./cmd/web-test
+  deps: tailwind@cc, templ@cc
+  cmd: 
+      go fmt ./...
+      go run ./cmd/eos-cli --http

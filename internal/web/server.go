@@ -16,6 +16,7 @@ import (
 	"runtime"
 	"sort"
 	"strconv"
+	"strings"
 	"syscall"
 	"time"
 
@@ -25,17 +26,12 @@ import (
 
 func newSrvMux() *http.ServeMux {
 	mux := http.NewServeMux()
-	if _, err := os.Stat("internal/web/assets"); err == nil {
-		mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.Dir("internal/web/assets"))))
-	} else {
-		// Use embedded assets.
-		var f fs.FS = embeddedAssets
-		// Restrict to the assets/ prefix to avoid exposing other files.
-		if sub, err := fs.Sub(embeddedAssets, "assets"); err == nil {
-			f = sub
-		}
-		mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.FS(f))))
+	// Serve static assets from the embedded filesystem.
+	var f fs.FS = embeddedAssets
+	if sub, err := fs.Sub(embeddedAssets, "assets"); err == nil {
+		f = sub
 	}
+	mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.FS(f))))
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if err := pages.HomePage().Render(r.Context(), w); err != nil {
@@ -47,6 +43,67 @@ func newSrvMux() *http.ServeMux {
 		if err := r.ParseForm(); err != nil {
 			http.Error(w, "invalid form", http.StatusBadRequest)
 			return
+		}
+
+		// Unit helpers
+		toKelvin := func(val float64, unit string) (float64, error) {
+			switch strings.ToUpper(unit) {
+			case "K", "":
+				if val <= 0 {
+					return 0, fmt.Errorf("temperature in K must be > 0")
+				}
+				return val, nil
+			case "C":
+				if val < -273.15 {
+					return 0, fmt.Errorf("temperature in °C must be ≥ -273.15")
+				}
+				return val + 273.15, nil
+			default:
+				return 0, fmt.Errorf("unsupported temperature unit")
+			}
+		}
+		toPa := func(val float64, unit string) (float64, error) {
+			switch strings.ToLower(unit) {
+			case "pa", "":
+				return val, nil
+			case "kpa":
+				return val * 1e3, nil
+			case "bar":
+				return val * 1e5, nil
+			case "atm":
+				return val * 101325.0, nil
+			default:
+				return 0, fmt.Errorf("unsupported pressure unit")
+			}
+		}
+
+		vFactor := func(unit string) (float64, string) {
+			switch unit {
+			case "m3_per_mol":
+				return 1.0, "m³/mol"
+			case "m3_per_kmol":
+				return 1e3, "m³/kmol"
+			case "cm3_per_mol":
+				return 1e-6, "cm³/mol"
+			case "cm3_per_kmol":
+				return 1e-9, "cm³/kmol"
+			default:
+				return 1.0, "m³/mol"
+			}
+		}
+		pFactor := func(unit string) (float64, string) {
+			switch strings.ToLower(unit) {
+			case "pa", "":
+				return 1.0, "Pa"
+			case "kpa":
+				return 1e3, "kPa"
+			case "bar":
+				return 1e5, "bar"
+			case "atm":
+				return 101325.0, "atm"
+			default:
+				return 1.0, "Pa"
+			}
 		}
 
 		parseFloat := func(name string, required bool) (float64, error) {
@@ -84,25 +141,61 @@ func newSrvMux() *http.ServeMux {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		R, err := parseFloat("R", true)
+		const internalR = 8.314 // Pa·m^3/(mol·K)
+		_, _ = parseFloat("R", false)
+		omega, _ := parseFloat("omega", false)
+		withAdv := r.FormValue("with_advanced") != ""
+
+		// Units from form
+		tUnit := r.FormValue("T_unit")
+		pUnit := r.FormValue("P_unit")
+		tcUnit := r.FormValue("Tc_unit")
+		pcUnit := r.FormValue("Pc_unit")
+		vUnit := r.FormValue("v_unit")
+		if vUnit == "" {
+			vUnit = "cm3_per_mol"
+		}
+
+		// Convert to SI
+		Tsi, err := toKelvin(T, tUnit)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-		omega, _ := parseFloat("omega", false)
-		withAdv := r.FormValue("with_advanced") != ""
+		Tcsi, err := toKelvin(Tc, tcUnit)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		Psi, err := toPa(P, pUnit)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		Pcsi, err := toPa(Pc, pcUnit)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		// Display scaling factors and labels
+		vFac, vLabel := vFactor(vUnit)
+		pFac, pLabel := pFactor(pUnit)
 
 		// Build configurations
-		vdWCfg := cubiceos.NewvdWCfg(T, P, Tc, Pc, R)
-		rkCfg := cubiceos.NewRKCfg(T, P, Tc, Pc, R)
-		srkCfg := cubiceos.NewSRKCfg(T, P, Tc, Pc, omega, R)
-		prCfg := cubiceos.NewPRCfg(T, P, Tc, Pc, omega, R)
+		vdWCfg := cubiceos.NewvdWCfg(Tsi, Psi, Tcsi, Pcsi, internalR)
+		rkCfg := cubiceos.NewRKCfg(Tsi, Psi, Tcsi, Pcsi, internalR)
+		srkCfg := cubiceos.NewSRKCfg(Tsi, Psi, Tcsi, Pcsi, omega, internalR)
+		prCfg := cubiceos.NewPRCfg(Tsi, Psi, Tcsi, Pcsi, omega, internalR)
 
 		calcAB := func(cfg cubiceos.EOSCfg) (float64, float64) {
 			tr := cfg.T / cfg.Tc
 			a := cfg.Type.Params().Psi * cfg.Type.Alpha(tr, cfg.W) * cfg.R * cfg.R * cfg.Tc * cfg.Tc / cfg.Pc
 			b := cfg.Type.Params().Omega * cfg.R * cfg.Tc / cfg.Pc
-			return a, b
+			// Scale for display: a in (P_unit · V_unit^2), b in V_unit
+			aDisp := a / (pFac * vFac * vFac)
+			bDisp := b / vFac
+			return aDisp, bDisp
 		}
 
 		collect := func(name string, cfg cubiceos.EOSCfg, include bool) *pages.EOSResult {
@@ -112,7 +205,7 @@ func newSrvMux() *http.ServeMux {
 			a, b := calcAB(cfg)
 			roots, err := cubiceos.CubicEOS(cfg)
 			if err != nil {
-				return &pages.EOSResult{Name: name, Classification: "error", Error: err.Error(), A: a, B: b}
+				return &pages.EOSResult{Name: name, Classification: "error", Error: err.Error(), A: a, B: b, AUnit: fmt.Sprintf("%s·(%s)²", pLabel, vLabel), BUnit: vLabel}
 			}
 			const eps = 1e-9
 			positives := make([]float64, 0, 3)
@@ -125,28 +218,35 @@ func newSrvMux() *http.ServeMux {
 				}
 			}
 			sort.Float64s(positives)
-			res := &pages.EOSResult{Name: name, A: a, B: b}
+			res := &pages.EOSResult{Name: name, A: a, B: b, AUnit: fmt.Sprintf("%s·(%s)²", pLabel, vLabel), BUnit: vLabel}
 			switch len(positives) {
 			case 0:
 				res.Classification = "none"
 			case 1:
 				res.Classification = "single-phase"
-				res.Vapor = &positives[0]
+				v := positives[0] / vFac
+				res.Vapor = &v
 			case 2:
 				// treat smaller as liquid, larger as vapor
 				res.Classification = "two-phase"
-				res.Liquid = &positives[0]
-				res.Vapor = &positives[1]
+				liq := positives[0] / vFac
+				vap := positives[1] / vFac
+				res.Liquid = &liq
+				res.Vapor = &vap
 			case 3:
 				// Check for critical (all nearly equal)
 				if math.Abs(positives[0]-positives[1]) < 1e-6 && math.Abs(positives[1]-positives[2]) < 1e-6 {
 					res.Classification = "critical"
-					res.Vapor = &positives[0]
+					v := positives[0] / vFac
+					res.Vapor = &v
 				} else {
 					res.Classification = "two-phase"
-					res.Liquid = &positives[0]
-					res.Unstable = &positives[1]
-					res.Vapor = &positives[2]
+					liq := positives[0] / vFac
+					unst := positives[1] / vFac
+					vap := positives[2] / vFac
+					res.Liquid = &liq
+					res.Unstable = &unst
+					res.Vapor = &vap
 				}
 			}
 			return res
