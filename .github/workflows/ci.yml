@@ -58,7 +58,7 @@ jobs:
         run: go env
 
       - name: Generate Templ components
-        run: go run github.com/a-h/templ/cmd/templ@v0.3.943
+        run: go run github.com/a-h/templ/cmd/templ@v0.3.943 generate #oops
 
       - name: Build Tailwind CSS
         run: |
