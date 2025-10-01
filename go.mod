@@ -7,7 +7,7 @@ require (
 	github.com/a-h/templ v0.3.943
 	github.com/charmbracelet/bubbles v0.21.0
 	github.com/charmbracelet/bubbletea v1.3.10
-	github.com/charmbracelet/fang v0.4.2
+	github.com/charmbracelet/fang v0.4.3
 	github.com/charmbracelet/lipgloss v1.1.0
 	github.com/spf13/cobra v1.10.1
 )
