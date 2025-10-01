@@ -1,5 +1,10 @@
 # cubiceos
 
+[![CI](https://github.com/RickyKimani/cubiceos/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/RickyKimani/cubiceos/actions/workflows/ci.yml)
+[![Go Reference](https://pkg.go.dev/badge/github.com/rickykimani/cubiceos.svg)](https://pkg.go.dev/github.com/rickykimani/cubiceos)
+[![Go Report Card](https://goreportcard.com/badge/github.com/rickykimani/cubiceos)](https://goreportcard.com/report/github.com/rickykimani/cubiceos)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Solvers and tools for cubic Equations of State (EOS) in Go.
 
 Supported EOS:
@@ -8,9 +13,10 @@ Supported EOS:
 - Soave–Redlich–Kwong (SRK)
 - Peng–Robinson (PR)
 
-This repository contains two parts:
+This repository contains three parts:
 1) Library: `github.com/rickykimani/cubiceos` — reusable Go package for EOS calculations
 2) TUI: an interactive terminal app to explore EOS results quickly
+3) Web UI: a simple browser app for solving and visualizing results
 
 ## Table of Contents
 
@@ -28,6 +34,10 @@ This repository contains two parts:
 	- [Controls & input](#controls-input)
 	- [Results view](#results-view)
     - [Demo](#demo)
+- [Part III — Web UI](#part-iii-web)
+    - [Features](#web-features)
+    - [Run](#web-run)
+    - [Screenshots](#web-screens)
 - [Project layout](#project-layout)
 - [License](#license)
 
@@ -65,7 +75,7 @@ this describes
 <a id="requirements"></a>
 ### Requirements
 
-- [Go 1.21+](https://go.dev/dl/)
+- [Go 1.22+](https://go.dev/dl/)
 
 <a id="install-lib"></a>
 ### Install
@@ -171,13 +181,44 @@ eos-cli
 
 ---
 
+<a id="part-iii-web"></a>
+## Part III — Web UI
+
+<a id="web-features"></a>
+### Features
+
+- Per-field unit selectors (T, P, Tc, Pc) with correct SI conversion internally
+- Volume display units (e.g., m³/mol, cm³/mol) applied to results
+- a(T) and b displayed with unit labels (a(T) in Punit·(Vunit)², b in Vunit)
+- Clean results view with phase classification badges and error messages
+- Dark mode with a top-right toggle; GitHub link in the header
+- Embedded static assets (works when installed via `go install`, no external files required)
+
+<a id="web-run"></a>
+### Run
+
+Quick start (opens browser on a local port):
+
+```powershell
+eos-cli --http
+```
+
+
+<a id="web-screens"></a>
+### Screenshots
+
+![Web Home](/resources/web.png)
+![Web Results](/resources/web_result..png)
+
+---
+
 <a id="project-layout"></a>
 ## Project layout
 
 - `cubiceos.go` — core types and `CubicEOS`
 - `solve.go` — general cubic polynomial solver and helpers
 - `vdw.go`, `rk.go`, `srk.go`, `pr.go` — EOS implementations and config builders
-- `cmd/` — interactive terminal UI
+- `cmd/` — interactive terminal UI and web UI
 - `example/` — minimal library usage example
 
 <a id="license"></a>
