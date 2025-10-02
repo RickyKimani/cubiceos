@@ -17,6 +17,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"sync/atomic"
 	"syscall"
 	"time"
 
@@ -24,7 +25,11 @@ import (
 	"github.com/rickykimani/cubiceos/internal/web/pages"
 )
 
+var lastActivity int64
+
 func newSrvMux() *http.ServeMux {
+	atomic.StoreInt64(&lastActivity, time.Now().Unix())
+
 	mux := http.NewServeMux()
 	// Serve static assets from the embedded filesystem.
 	var f fs.FS = embeddedAssets
@@ -34,12 +39,14 @@ func newSrvMux() *http.ServeMux {
 	mux.Handle("/assets/", http.StripPrefix("/assets/", http.FileServer(http.FS(f))))
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		atomic.StoreInt64(&lastActivity, time.Now().Unix())
 		if err := pages.HomePage().Render(r.Context(), w); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	})
 
 	mux.HandleFunc("/calculate", func(w http.ResponseWriter, r *http.Request) {
+		atomic.StoreInt64(&lastActivity, time.Now().Unix())
 		if err := r.ParseForm(); err != nil {
 			http.Error(w, "invalid form", http.StatusBadRequest)
 			return
@@ -324,8 +331,29 @@ func Run() {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
 
-	<-quit
-	log.Println("shutting down server...")
+	inactive := make(chan struct{})
+
+	go func() {
+		timeout := 3 * time.Minute
+		ticker := time.NewTicker(5 * time.Second)
+		defer ticker.Stop()
+
+		for range ticker.C {
+			last := atomic.LoadInt64(&lastActivity)
+			if time.Since(time.Unix(last, 0)) > timeout {
+				log.Println("Re-run server with 'eos-cli --http'")
+				close(inactive)
+				return
+			}
+		}
+	}()
+
+	select {
+	case <-quit:
+		log.Println("Recieved interupt signal")
+	case <-inactive:
+		log.Println("Inactivity timeout reached")
+	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
 	defer cancel()
